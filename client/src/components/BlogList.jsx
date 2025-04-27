@@ -16,6 +16,60 @@ const BlogList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const blogsPerPage = 6;
 
+  // --- Static Blogs ---
+  const staticBlogs = [
+    {
+      _id: 'static1',
+      title: 'Welcome to Our Blog',
+      category_name: 'Introduction',
+      blog_image_url: 'https://images.pexels.com/photos/3826678/pexels-photo-3826678.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      content: 'Discover exciting stories and articles crafted just for you.',
+    },
+    {
+      _id: 'static2',
+      title: 'Getting Started with Us',
+      category_name: 'Guide',
+      blog_image_url: 'https://images.pexels.com/photos/11814563/pexels-photo-11814563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      content: 'Learn how to make the most out of our platform easily!',
+    },
+    {
+      _id: 'static3',
+      title: 'Top 5 Tips for Beginners',
+      category_name: 'Tips',
+      blog_image_url: 'https://images.pexels.com/photos/5554667/pexels-photo-5554667.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      content: 'Boost your journey with our top beginner-friendly tips.',
+    },
+    {
+      _id: 'static4',
+      title: 'Behind the Scenes',
+      category_name: 'Stories',
+      blog_image_url: 'https://images.pexels.com/photos/2510422/pexels-photo-2510422.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      content: 'Get an insider view of how we create amazing content!',
+    },
+    {
+      _id: 'static5',
+      title: 'Upcoming Features Sneak Peek',
+      category_name: 'Updates',
+      blog_image_url: 'https://images.pexels.com/photos/30630022/pexels-photo-30630022/free-photo-of-playful-cat-hiding-behind-chairs-in-cozy-home.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      content: 'Check out what awesome features are coming your way!',
+    },
+    {
+      _id: 'static6',
+      title: 'Join Our Community',
+      category_name: 'Community',
+      blog_image_url: 'https://images.pexels.com/photos/3931549/pexels-photo-3931549.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      content: 'Be part of a vibrant, helpful, and growing community.',
+    },
+    {
+      _id: 'static7',
+      title: 'Mastering Productivity',
+      category_name: 'Lifestyle',
+      blog_image_url: 'https://images.pexels.com/photos/7123348/pexels-photo-7123348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      content: 'Unlock your true potential with simple productivity techniques.',
+    },    
+  ];
+  // --------------------
+
   useEffect(() => {
     if (token) {
       dispatch(fetchBlogs(token));
@@ -26,8 +80,8 @@ const BlogList = () => {
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       setSearchQuery(searchInput);
-      setCurrentPage(1); // Reset to first page when search changes
-    }, 500); // 500ms delay
+      setCurrentPage(1);
+    }, 500);
 
     return () => clearTimeout(debounceTimer);
   }, [searchInput]);
@@ -36,7 +90,9 @@ const BlogList = () => {
     navigate('/create');
   };
 
-  const filteredBlogs = blogs.filter((blog) =>
+  const blogsToDisplay = blogs.length > 0 ? blogs : staticBlogs;
+
+  const filteredBlogs = blogsToDisplay.filter((blog) =>
     blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     blog.category_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
