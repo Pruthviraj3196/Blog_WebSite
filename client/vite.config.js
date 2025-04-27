@@ -13,7 +13,7 @@ import react from '@vitejs/plugin-react';
     server: {
       host: '0.0.0.0',
       port: 4562,
-      allowedHosts: ['blog-website-d8oe.onrender.com'],
+      allowedHosts: ['blog-website-1-j0n3.onrender.com'],
       proxy: {
         '/api': {
           target: "https://blog-website-d8oe.onrender.com",
