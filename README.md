@@ -3,6 +3,13 @@
 </hr>
 
 ### Hosted Site - [https://blog-website-1-j0n3.onrender.com/blogs]
+
+# ✨ Special Feature: Static Blogs Fallback
+## 💬 Quick Explanation:
+- When blogs list is empty, it automatically displays a set of static blogs.
+- When blogs are fetched from server successfully, it shows only real blogs.
+- If the API fails or returns empty, the app still looks good with no broken experience!
+
 ## Features
 
 - User Registration and Login (with JWT Token Authentication)
