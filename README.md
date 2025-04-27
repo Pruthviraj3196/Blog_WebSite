@@ -2,6 +2,7 @@
 ### A Full Stack Mini Blog App built with React, Redux Toolkit, Node.js, Express, MongoDB, JWT Authentication, TailwindCSS, Pagination, and Debounced Search functionality.
 </hr>
 
+### Hosted Site - [https://blog-website-1-j0n3.onrender.com/blogs]
 ## Features
 
 - User Registration and Login (with JWT Token Authentication)
