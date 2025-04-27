@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBlogs } from '../features/blog/blogSlice';
 import { useNavigate } from 'react-router-dom';
-import ImageSlider from '../components/ImageSlider'; // import slider
+import ImageSlider from '../components/ImageSlider';
 
 const BlogList = () => {
   const dispatch = useDispatch();
@@ -12,6 +12,7 @@ const BlogList = () => {
   const { token } = useSelector((state) => state.auth);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const blogsPerPage = 6;
 
@@ -21,11 +22,20 @@ const BlogList = () => {
     }
   }, [dispatch, token]);
 
+  // Debounce the search input
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setSearchQuery(searchInput);
+      setCurrentPage(1); // Reset to first page when search changes
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchInput]);
+
   const handleCreateBlog = () => {
     navigate('/create');
   };
 
-  // Filter blogs based on search query
   const filteredBlogs = blogs.filter((blog) =>
     blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     blog.category_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -50,36 +60,32 @@ const BlogList = () => {
   };
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1); // Reset to first page after search
+    setSearchInput(e.target.value);
   };
 
   return (
     <div className="w-full">
-      {/* Full width ImageSlider */}
       <ImageSlider />
 
-      {/* Blog content - Centered */}
       <div className="max-w-6xl mx-auto px-4 mt-10">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
           <h2 className="text-4xl font-bold text-gray-800">My Blogs</h2>
-          <button
-            onClick={handleCreateBlog}
-            className="bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition duration-300"
-          >
-            + Create Blog
-          </button>
-        </div>
 
-        {/* Search Bar */}
-        <div className="mb-8">
-          <input
-            type="text"
-            placeholder="Search blogs by title or category..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+          <div className="flex items-center gap-4">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchInput}
+              onChange={handleSearchChange}
+              className="w-48 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <button
+              onClick={handleCreateBlog}
+              className="bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+            >
+              + Create Blog
+            </button>
+          </div>
         </div>
 
         {loading && <p>Loading blogs...</p>}
@@ -108,7 +114,6 @@ const BlogList = () => {
           )}
         </div>
 
-        {/* Pagination */}
         {filteredBlogs.length > blogsPerPage && (
           <div className="flex justify-center mt-10 space-x-6">
             <button
